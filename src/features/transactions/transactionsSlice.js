@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { current } from "@reduxjs/toolkit";
 
 const initialState = {
   original: null,
@@ -29,10 +30,11 @@ export const transactionsSlice = createSlice({
       state.show = list;
     },
     setSortedValue: (state, action) => {
-      console.log(action);
-      const sortedList = state.show?.filter(
-        (item) => item.transactionType !== action?.payload
-      );
+      const sortedList = state.original?.filter((item) => {
+        if (action.payload === null) return true;
+        return item.transactionType === action?.payload;
+      });
+      state.show = sortedList;
     },
   },
 });

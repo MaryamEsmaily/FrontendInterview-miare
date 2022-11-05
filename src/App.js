@@ -3,7 +3,10 @@ import { useEffect, useState } from "react";
 import Select from "./components/core/Select";
 import TransactionTypes from "./constant/TransactionTypes";
 import { useSelector, useDispatch } from "react-redux";
-import { setOriginalValue } from "./features/transactions/transactionsSlice";
+import {
+  setOriginalValue,
+  setSortedValue,
+} from "./features/transactions/transactionsSlice";
 import { dateConverter } from "./utils/dateConverter";
 
 function App() {
@@ -19,6 +22,11 @@ function App() {
   //
   const showValue = useSelector((state) => state.counter.show);
   //
+  const handleSortList = (e) => {
+    dispatch(setSortedValue(e?.value));
+    setSelectedTransaction(e);
+  };
+  //
   return (
     <div className="App" dir="rtl">
       <div className="container">
@@ -28,7 +36,7 @@ function App() {
             <label className="text-xs">نوع تراکنش</label>
             <Select
               options={TransactionTypes}
-              onChange={setSelectedTransaction}
+              onChange={(e) => handleSortList(e)}
               value={selectedTransaction}
               placeholder="انتخاب کنید"
             />
@@ -51,7 +59,7 @@ function App() {
 
             const amount = value?.final_price || value?.amount;
             return (
-              <div className="my-4">
+              <div className="my-4" key={value?.id}>
                 <div className="bg-slate-300 px-6 py-1 text-lg">
                   {dateConverter(dateTime).weekendDate}{" "}
                   {dateConverter(dateTime).titleDate}

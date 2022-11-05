@@ -1,4 +1,5 @@
 const TransactionTypes = [
+  { label: "همه تراکنش ها", value: null },
   { label: "هزینه خرید ظرفیت", value: "concurrency_costs" },
   { label: "هزینه شارژ حساب", value: "payments" },
   { label: "هزینه سفر", value: "trip_financials" },
