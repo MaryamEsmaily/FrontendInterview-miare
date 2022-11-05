@@ -36,9 +36,16 @@ export const transactionsSlice = createSlice({
       });
       state.show = sortedList;
     },
+    setSearchedValue: (state, action) => {
+      const searchList = state.original?.filter((item) =>
+        item.driver?.includes(action?.payload)
+      );
+      state.show = searchList;
+    },
   },
 });
 
-export const { setOriginalValue, setSortedValue } = transactionsSlice.actions;
+export const { setOriginalValue, setSortedValue, setSearchedValue } =
+  transactionsSlice.actions;
 
 export default transactionsSlice.reducer;

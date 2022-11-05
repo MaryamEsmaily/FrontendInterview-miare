@@ -3,6 +3,6 @@ import transactionsReducer from "../features/transactions/transactionsSlice";
 
 export const store = configureStore({
   reducer: {
-    counter: transactionsReducer,
+    transaction: transactionsReducer,
   },
 });

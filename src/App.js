@@ -5,6 +5,7 @@ import TransactionTypes from "./constant/TransactionTypes";
 import { useSelector, useDispatch } from "react-redux";
 import {
   setOriginalValue,
+  setSearchedValue,
   setSortedValue,
 } from "./features/transactions/transactionsSlice";
 import { dateConverter } from "./utils/dateConverter";
@@ -13,18 +14,24 @@ function App() {
   //
   const dispatch = useDispatch();
   //
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedTransaction, setSelectedTransaction] = useState("");
+  //
   useEffect(() => {
     axios.get("/data.json").then((res) => dispatch(setOriginalValue(res.data)));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   //
-  const [selectedTransaction, setSelectedTransaction] = useState();
-  //
-  const showValue = useSelector((state) => state.counter.show);
-  //
+  const showValue = useSelector((state) => state.transaction.show);
+  // sort
   const handleSortList = (e) => {
     dispatch(setSortedValue(e?.value));
     setSelectedTransaction(e);
+  };
+  // search
+  const handleSearchList = (event) => {
+    setSearchTerm(event.target.value);
+    dispatch(setSearchedValue(event.target.value));
   };
   //
   return (
@@ -47,17 +54,20 @@ function App() {
               <input
                 placeholder="نام کوریر را وارد کنید"
                 type="text"
-                className="w-full p-2 border border-indigo-700 rounded-lg "
+                className="w-full p-2 border border-indigo-700 rounded-lg"
+                value={searchTerm}
+                onChange={handleSearchList}
               />
             </div>
           )}
         </div>
         <div className="mt-5">
           {showValue?.map((value) => {
+            //
             const dateTime =
               value?.request_datetime || value?.datetime || value?.created_at;
-
             const amount = value?.final_price || value?.amount;
+            //
             return (
               <div className="my-4" key={value?.id}>
                 <div className="bg-slate-300 px-6 py-1 text-lg">
