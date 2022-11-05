@@ -13,3 +13,11 @@
     @apply relative w-full cursor-default rounded-lg bg-white py-2 pr-3 pl-10 text-right border border-indigo-700 focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300;
   }
 }
+
+@font-face {
+  font-family: IRANSansX;
+  font-style: normal;
+  font-weight: 100;
+  src: url("/src/assets/fonts/iransans/iransans.woff") format("woff"),
+    url("/src/assets/fonts/iransans/iransans.woff2") format("woff2");
+}

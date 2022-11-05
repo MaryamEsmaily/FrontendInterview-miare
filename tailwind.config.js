@@ -7,6 +7,9 @@ module.exports = {
         center: true,
         padding: "2rem",
       },
+      fontFamily: {
+        sans: ["IRANSansX"],
+      },
     },
   },
   plugins: [require("tailwindcss-rtl")],
