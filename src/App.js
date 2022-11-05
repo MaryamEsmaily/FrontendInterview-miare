@@ -38,7 +38,7 @@ function App() {
     <div className="App" dir="rtl">
       <div className="container">
         <div className="text-xl my-5">تمام تراکنش ها</div>
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-3 sticky top-0 bg-white py-5">
           <div className="w-full ">
             <label className="text-xs">نوع تراکنش</label>
             <Select
@@ -79,9 +79,14 @@ function App() {
                     {dateConverter(dateTime).shortTime} ،
                     {dateConverter(dateTime).shortDate}
                   </div>
-                  <div className="flex flex-col md:flex-row justify-between items-center mt-3 ">
+                  <div className="flex flex-col md:flex-row justify-between lg:items-center mt-3 ">
                     <div>
-                      <div>خسارت</div>
+                      <div>
+                        {TransactionTypes?.map((item) => {
+                          if (item.value === value.transactionType)
+                            return item.label;
+                        })}
+                      </div>
                       {value?.transactionType !== "trip_financials" ? null : (
                         <div>
                           <div className="flex">
