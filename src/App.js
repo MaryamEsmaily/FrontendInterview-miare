@@ -9,6 +9,9 @@ import {
   setSortedValue,
 } from "./features/transactions/transactionsSlice";
 import { dateConverter } from "./utils/dateConverter";
+import warningIcon from "./assets/icons/warning-icon.svg";
+import transactionIcon from "./assets/icons/transaction-icon.svg";
+import calenderIcon from "./assets/icons/calender-icon.svg";
 
 function App() {
   //
@@ -36,9 +39,17 @@ function App() {
   //
   return (
     <div className="App" dir="rtl">
-      <div className="container">
-        <div className="text-xl my-5">تمام تراکنش ها</div>
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-3 sticky top-0 bg-white py-5">
+      <div className="container my-10">
+        <div className="flex items-center mt-6 p-6 text-white rounded-lg bg-slate-400">
+          <img
+            alt="transaction-icon"
+            src={transactionIcon}
+            width="25px"
+            height="25px"
+          />
+          <div className="text-xl font-bold pr-2">تمام تراکنش ها</div>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 sticky top-0 bg-white py-5">
           <div className="w-full ">
             <label className="text-xs">نوع تراکنش</label>
             <Select
@@ -50,9 +61,9 @@ function App() {
           </div>
           {selectedTransaction?.value !== "trip_financials" ? null : (
             <div>
-              <label className="text-xs">کوریر</label>
+              <label className="text-xs">پیک</label>
               <input
-                placeholder="نام کوریر را وارد کنید"
+                placeholder="نام پیک را وارد کنید"
                 type="text"
                 className="w-full p-2 border border-indigo-700 rounded-lg"
                 value={searchTerm}
@@ -62,64 +73,86 @@ function App() {
           )}
         </div>
         <div className="mt-5">
-          {showValue?.map((value) => {
-            //
-            const dateTime =
-              value?.request_datetime || value?.datetime || value?.created_at;
-            const amount = value?.final_price || value?.amount;
-            //
-            return (
-              <div className="my-4" key={value?.id}>
-                <div className="bg-slate-300 px-6 py-1 text-lg">
-                  {dateConverter(dateTime).weekendDate}{" "}
-                  {dateConverter(dateTime).titleDate}
-                </div>
-                <div className="mx-8 mt-4 text-sm">
-                  <div>
-                    {dateConverter(dateTime).shortTime} ،
-                    {dateConverter(dateTime).shortDate}
+          {showValue?.length ? (
+            showValue?.map((value) => {
+              const dateTime =
+                value?.request_datetime || value?.datetime || value?.created_at;
+              const amount = value?.final_price || value?.amount;
+              //
+              return (
+                <div
+                  className="my-4 bg-slate-100 rounded-md overflow-hidden"
+                  key={value?.id}
+                >
+                  <div className="flex items-center bg-slate-200 px-6 py-2 text-lg">
+                    <img
+                      className="pl-1"
+                      alt=""
+                      src={calenderIcon}
+                      width="25px"
+                      height="25px"
+                    />
+                    {dateConverter(dateTime).weekendDate}{" "}
+                    {dateConverter(dateTime).titleDate}
                   </div>
-                  <div className="flex flex-col md:flex-row justify-between lg:items-center mt-3 ">
+                  <div className="mx-8 mt-2 text-sm px-3 py-4">
                     <div>
-                      <div>
-                        {TransactionTypes?.map((item) => {
-                          if (item.value === value.transactionType)
-                            return item.label;
-                        })}
-                      </div>
-                      {value?.transactionType !== "trip_financials" ? null : (
-                        <div>
-                          <div className="flex">
-                            <div className="w-10">کوریر:</div>
-                            <div> {value?.driver}</div>
-                          </div>
-                          <div className="flex">
-                            <div className="w-10">شعبه: </div>
-                            <div>{value?.hub?.title}</div>
-                          </div>
-                        </div>
-                      )}
-                      {value?.transactionType !== "concurrency_costs" ? null : (
-                        <div>
-                          از تاریخ {dateConverter(value?.end_date).shortDate} تا{" "}
-                          {dateConverter(value?.start_date).shortDate}
-                        </div>
-                      )}
+                      {dateConverter(dateTime).shortTime} ،
+                      {dateConverter(dateTime).shortDate}
                     </div>
-                    <div
-                      className="text-xs"
-                      style={{
-                        direction: "ltr",
-                        color: amount < 0 ? "red" : "green",
-                      }}
-                    >
-                      {amount}
+                    <div className="flex flex-col md:flex-row justify-between lg:items-center mt-3 ">
+                      <div>
+                        <div
+                          className={`font-bold mb-2 ${
+                            amount < 0 ? "text-rose-500" : "text-green-500"
+                          }`}
+                        >
+                          {TransactionTypes?.map((item) => {
+                            if (item.value === value.transactionType)
+                              return item.label;
+                          })}
+                        </div>
+                        {value?.transactionType !== "trip_financials" ? null : (
+                          <div>
+                            <div className="flex mb-1">
+                              <div className="w-10">پیک:</div>
+                              <div> {value?.driver}</div>
+                            </div>
+                            <div className="flex">
+                              <div className="w-10">شعبه: </div>
+                              <div>{value?.hub?.title}</div>
+                            </div>
+                          </div>
+                        )}
+                        {value?.transactionType !==
+                        "concurrency_costs" ? null : (
+                          <div>
+                            از تاریخ {dateConverter(value?.end_date).shortDate}{" "}
+                            تا {dateConverter(value?.start_date).shortDate}
+                          </div>
+                        )}
+                      </div>
+                      <div
+                        className={`text-sm font-bold ${
+                          amount < 0 ? "text-rose-500" : "text-green-500"
+                        }`}
+                        style={{
+                          direction: "ltr",
+                        }}
+                      >
+                        {amount}
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })
+          ) : (
+            <div className="flex items-center justify-center font-bold bg-red-200 p-5 rounded-lg">
+              <img alt="" src={warningIcon} width="25px" height="25px" />
+              <div className="px-2">داده ای وجود ندارد!</div>
+            </div>
+          )}
         </div>
       </div>
     </div>
