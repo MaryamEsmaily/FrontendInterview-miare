@@ -18,7 +18,10 @@ function App() {
   const dispatch = useDispatch();
   //
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedTransaction, setSelectedTransaction] = useState("");
+  const [selectedTransaction, setSelectedTransaction] = useState({
+    label: "همه تراکنش ها",
+    value: "all",
+  });
   //
   useEffect(() => {
     axios.get("/data.json").then((res) => dispatch(setOriginalValue(res.data)));
@@ -75,8 +78,6 @@ function App() {
         <div className="mt-5">
           {showValue?.length ? (
             showValue?.map((value) => {
-              const dateTime =
-                value?.request_datetime || value?.datetime || value?.created_at;
               const amount = value?.final_price || value?.amount;
               //
               return (
@@ -92,13 +93,13 @@ function App() {
                       width="25px"
                       height="25px"
                     />
-                    {dateConverter(dateTime).weekendDate}{" "}
-                    {dateConverter(dateTime).titleDate}
+                    {dateConverter(value?.date).weekendDate}{" "}
+                    {dateConverter(value?.date).titleDate}
                   </div>
                   <div className="mx-8 mt-2 text-sm px-3 py-4">
                     <div>
-                      {dateConverter(dateTime).shortTime} ،
-                      {dateConverter(dateTime).shortDate}
+                      {dateConverter(value?.date).shortTime} ،
+                      {dateConverter(value?.date).shortDate}
                     </div>
                     <div className="flex flex-col md:flex-row justify-between lg:items-center mt-3 ">
                       <div>

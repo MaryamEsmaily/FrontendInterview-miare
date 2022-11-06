@@ -31,7 +31,7 @@ export const transactionsSlice = createSlice({
     },
     setSortedValue: (state, action) => {
       const sortedList = state.original?.filter((item) => {
-        if (action.payload === null) return true;
+        if (action.payload === "all") return true;
         return item.transactionType === action?.payload;
       });
       state.show = sortedList;
