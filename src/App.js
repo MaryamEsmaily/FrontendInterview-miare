@@ -107,10 +107,11 @@ function App() {
                             amount < 0 ? "text-rose-500" : "text-green-500"
                           }`}
                         >
-                          {TransactionTypes?.map((item) => {
-                            if (item.value === value.transactionType)
-                              return item.label;
-                          })}
+                          {
+                            TransactionTypes?.find(
+                              (item) => item.value === value.transactionType
+                            )?.label
+                          }
                         </div>
                         {value?.transactionType !== "trip_financials" ? null : (
                           <div>
